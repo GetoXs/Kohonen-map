@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Kohonen
 {
@@ -78,9 +79,16 @@ namespace Kohonen
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SOM mapa = new SOM( 40, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(numericUpDown2.Value), nazwapliku);
-            pictureBox2.Image = mapa.bit;
+			//nowy watek
+			Thread t = new Thread(new ThreadStart(SOMStart));
+			t.Start();
+            //pictureBox2.Image = mapa.bit;
         }
+		private void SOMStart()
+		{
+			SOM mapa = new SOM(10, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(numericUpDown2.Value), nazwapliku, pictureBox2);
+		}
+		
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
