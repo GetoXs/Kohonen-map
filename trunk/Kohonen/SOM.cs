@@ -53,15 +53,17 @@ namespace Kohonen
         private void LadujDane(string file) //przerobić na BMP - na razie średnio działa
         {
             Bitmap MapaWejsciowa = new Bitmap(file);
-            double[] Wejscia = new double[3];
+			double[] Wejscia;
 
             int x, y;
+			Color pixelColor;
 
             for (x = 0; x < MapaWejsciowa.Width; x++)
             {
                 for (y = 0; y < MapaWejsciowa.Height; y++)
                 {
-                    Color pixelColor = MapaWejsciowa.GetPixel(x, y);
+                    pixelColor = MapaWejsciowa.GetPixel(x, y);
+					Wejscia = new double[3];
 
                     Wejscia[0] = (double)pixelColor.R/256.0;
 					Wejscia[1] = (double)pixelColor.G / 256.0;
