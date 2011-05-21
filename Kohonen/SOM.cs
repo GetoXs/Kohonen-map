@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Kohonen
 {
     public class SOM
     {
+		private PictureBox pic;
+
         private Neuron[,] Wagi;     // Wagi neuronów
         private int Iteracja;       // Obecna iteracja.
         private int SzerWyjscia;    // Rozmiar siatki wyjściowej.
@@ -20,8 +23,9 @@ namespace Kohonen
         private List<double[]> Schematy = new List<double[]>();
 
 
-        public SOM(int SzerWyjscia, int Iteracji, double Lambda, string File)
+        public SOM(int SzerWyjscia, int Iteracji, double Lambda, string File, PictureBox pict)
         {
+			this.pic = pict;
             this.SzerWyjscia = SzerWyjscia;
             this.Iteracji = Iteracji;
             this.Lambda = Lambda;
@@ -65,9 +69,9 @@ namespace Kohonen
                     pixelColor = MapaWejsciowa.GetPixel(x, y);
 					Wejscia = new double[3];
 
-                    Wejscia[0] = (double)pixelColor.R/256.0;
-					Wejscia[1] = (double)pixelColor.G / 256.0;
-					Wejscia[2] = (double)pixelColor.B / 256.0;
+                    Wejscia[0] = (double)pixelColor.R / 255.0;
+					Wejscia[1] = (double)pixelColor.G / 255.0;
+					Wejscia[2] = (double)pixelColor.B / 255.0;
                     Schematy.Add(Wejscia);
                 }
             }
@@ -93,19 +97,35 @@ namespace Kohonen
         private void Nauka(double maxError)
         {
             double ObecnyBlad = double.MaxValue;
+			double[] Wzor;
+			List<double[]> TrainingSet;
+			DateTime tmp1, tmp2;
+			TimeSpan t1 = new TimeSpan(), t2 = new TimeSpan(), t3 = new TimeSpan();
             while (ObecnyBlad > maxError)
             {
+				//aktualizacja obrazka poglądowego
+				pic.Image = this.Image();
+
+
                 ObecnyBlad = 0;
-                List<double[]> TrainingSet = new List<double[]>();
-                foreach (double[] Wzor in Schematy)
+                TrainingSet = new List<double[]>(Schematy.Count+1);
+                foreach (double[] row in Schematy)
                 {
-                    TrainingSet.Add((double[])Wzor.Clone());
+                    TrainingSet.Add((double[])row.Clone());
                 }
                 for (int i = 0; i < Schematy.Count; i++)
                 {
-                    double[] Wzor = TrainingSet[rnd.Next(Schematy.Count - i)];
-                    ObecnyBlad += SchematUczenia(Wzor);
+                    Wzor = TrainingSet[rnd.Next(Schematy.Count - i)];
+
+					//tmp2 = DateTime.Now;              
+					//cos robi sie nie tak w tej funkcji, poza tym strasznie dlugo działa, przez co na jeden obieg petli while trzeba czekać b. długo
+					ObecnyBlad += SchematUczenia(Wzor);	
+					
+					//tmp1 = DateTime.Now;
+					//t2 = tmp1 - tmp2;
+
                     TrainingSet.Remove(Wzor);
+
                 }
                 Console.WriteLine(ObecnyBlad.ToString("0.0000000"));
             }
@@ -156,7 +176,7 @@ namespace Kohonen
             double Wartosc = 0;
             for (int i = 0; i < Wektor1.Length; i++)
             {
-                Wartosc += Math.Pow((Wektor1[i] - Wektor2[i]), 2);
+				Wartosc += (Wektor1[i] - Wektor2[i]) * (Wektor1[i] - Wektor2[i]);
             }
             return Math.Sqrt(Wartosc);
         }
@@ -174,7 +194,7 @@ namespace Kohonen
                     g = Wagi[i, j].Wagi[1];
                     b = Wagi[i, j].Wagi[2];
 
-                    Color kolor = Color.FromArgb(Convert.ToInt32(r*256), Convert.ToInt32(g*256), Convert.ToInt32(b*256));
+                    Color kolor = Color.FromArgb(Convert.ToInt32(r*255), Convert.ToInt32(g*255), Convert.ToInt32(b*255));
                     Obraz.SetPixel(i, j, kolor);
                 }
             }
