@@ -99,7 +99,7 @@ namespace Kohonen
                 List<double[]> TrainingSet = new List<double[]>();
                 foreach (double[] Wzor in Schematy)
                 {
-                    TrainingSet.Add(Wzor);
+                    TrainingSet.Add((double[])Wzor.Clone());
                 }
                 for (int i = 0; i < Schematy.Count; i++)
                 {
