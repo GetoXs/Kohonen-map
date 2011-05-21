@@ -63,9 +63,9 @@ namespace Kohonen
                 {
                     Color pixelColor = MapaWejsciowa.GetPixel(x, y);
 
-                    Wejscia[0] = pixelColor.R/256;
-                    Wejscia[1] = pixelColor.G/256;
-                    Wejscia[2] = pixelColor.B/256;
+                    Wejscia[0] = (double)pixelColor.R/256.0;
+					Wejscia[1] = (double)pixelColor.G / 256.0;
+					Wejscia[2] = (double)pixelColor.B / 256.0;
                     Schematy.Add(Wejscia);
                 }
             }
