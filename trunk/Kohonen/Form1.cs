@@ -86,7 +86,9 @@ namespace Kohonen
         }
 		private void SOMStart()
 		{
-			SOM mapa = new SOM(10, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(numericUpDown2.Value), nazwapliku, pictureBox2);
+      KohonenMap.convert(pictureBox1.Image);
+      pictureBox2.Image = KohonenMap.outputImage;
+			//SOM mapa = new SOM(10, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(numericUpDown2.Value), nazwapliku, pictureBox2);
 		}
 		
 
