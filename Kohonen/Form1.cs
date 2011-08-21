@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -41,32 +41,14 @@ namespace Kohonen
                         {
                             nazwapliku = openFileDialog1.FileName;
                             Bitmap bit = new Bitmap(nazwapliku);
-                            Bitmap bit2 = new Bitmap(nazwapliku);
 
-
-                            
                             pictureBox1.Image = bit;
                             label5.Text = "Pixel format: " + bit.PixelFormat.ToString();
                             label9.Text = "Rozmiar obrazka: " + bit.Width + " x " + bit.Height;
                             AspectRatio = ((float)bit.Height / (float)bit.Width);
 
                             label8.Text = numericUpDown3.Value + " x " + Math.Truncate((float)numericUpDown3.Value * AspectRatio);
-                            //ot zabawa
-
-                            /* int x, y;
-
-                            for (x = 0; x < bit2.Width; x++)
-                            {
-                                for (y = 0; y < bit2.Height; y++)
-                                {
-                                    Color pixelColor = bit2.GetPixel(x, y);
-                                    Color newColor = Color.FromArgb(pixelColor.R, 0, 0);
-                                    bit2.SetPixel(x, y, newColor);
-                                }
-                            }
-
-                            pictureBox2.Image = bit2;
-                             * */
+                            
                         }
                     }
                 }
@@ -86,9 +68,13 @@ namespace Kohonen
         }
 		private void SOMStart()
 		{
-      KohonenMap.convert(pictureBox1.Image);
-      pictureBox2.Image = KohonenMap.outputImage;
-			//SOM mapa = new SOM(10, Convert.ToInt32(numericUpDown1.Value), Convert.ToDouble(numericUpDown2.Value), nazwapliku, pictureBox2);
+            DateTime startTime = DateTime.Now;
+            label10.Text = "Kompresja w toku";
+            KohonenMap.convert(pictureBox1.Image, Convert.ToInt32(numericUpDown3.Value), Convert.ToInt32(numericUpDown1.Value), 16, Convert.ToDouble(numericUpDown2.Value));
+            pictureBox2.Image = KohonenMap.outputImage;
+            DateTime stopTime = DateTime.Now;
+            TimeSpan roznica = stopTime - startTime;
+            label10.Text = ("Kompresja zajęła:" + roznica.TotalSeconds +" sekund.");
 		}
 		
 
