@@ -15,6 +15,11 @@ namespace Kohonen
     {
         String nazwapliku;
         float AspectRatio;
+        int _neighbourhood;
+        int _epochs;
+        int _clusters;
+        double _learnign_rate;
+        Image _imgSrc;
 
         public Form1()
         {
@@ -61,20 +66,28 @@ namespace Kohonen
 
         private void button2_Click(object sender, EventArgs e)
         {
-			//nowy watek
-			Thread t = new Thread(new ThreadStart(SOMStart));
-			t.Start();
+          _neighbourhood = Convert.ToInt32(numericUpDown3.Value);
+          _epochs = Convert.ToInt32(numericUpDown1.Value);
+          _clusters = 16;
+          _learnign_rate = Convert.ToDouble(numericUpDown2.Value);
+          _imgSrc = pictureBox1.Image;
+
+
+			    //nowy watek
+          
+			    Thread t = new Thread(new ThreadStart(SOMStart));
+			    t.Start();
             //pictureBox2.Image = mapa.bit;
         }
 		private void SOMStart()
 		{
             DateTime startTime = DateTime.Now;
-            label10.Text = "Kompresja w toku";
-            KohonenMap.convert(pictureBox1.Image, Convert.ToInt32(numericUpDown3.Value), Convert.ToInt32(numericUpDown1.Value), 16, Convert.ToDouble(numericUpDown2.Value));
+            //label10.Text = "Kompresja w toku";
+            KohonenMap.convert(_imgSrc, _neighbourhood, _epochs, _clusters, _learnign_rate);
             pictureBox2.Image = KohonenMap.outputImage;
             DateTime stopTime = DateTime.Now;
             TimeSpan roznica = stopTime - startTime;
-            label10.Text = ("Kompresja zajęła:" + roznica.TotalSeconds +" sekund.");
+            //label10.Text = ("Kompresja zajęła:" + roznica.TotalSeconds +" sekund.");
 		}
 		
 
