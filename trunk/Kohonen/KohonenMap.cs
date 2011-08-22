@@ -46,16 +46,16 @@ namespace Kohonen
             learning_rate = rate;
             Y_DIM = bitmapa.Height;
             X_DIM = bitmapa.Width;
-            INPUT_FILE = new int[Y_DIM * X_DIM + 1, RGB];
+            INPUT_FILE = new int[Y_DIM * X_DIM, RGB];
             //odczyt bitmapy
             int k = 0;
             for (int i = 0; i < Y_DIM; i++)
             {
                 for (int j = 0; j < X_DIM; j++)
                 {
-                    INPUT_FILE[k, 0] = bitmapa.GetPixel(i, j).R;
-                    INPUT_FILE[k, 1] = bitmapa.GetPixel(i, j).G;
-                    INPUT_FILE[k, 2] = bitmapa.GetPixel(i, j).B;
+                    INPUT_FILE[k, 0] = bitmapa.GetPixel(j, i).R;
+                    INPUT_FILE[k, 1] = bitmapa.GetPixel(j, i).G;
+                    INPUT_FILE[k, 2] = bitmapa.GetPixel(j, i).B;
                     k++;
                 }
             }
@@ -144,8 +144,8 @@ namespace Kohonen
 
         public static void FinishedBitmap()
         {
-            StreamWriter out_CompressedImage = new StreamWriter("xx.bmp");
-            Bitmap bit = new Bitmap(X_DIM, Y_DIM);
+            //StreamWriter out_CompressedImage = new StreamWriter("xx.bmp");
+          Bitmap bit = new Bitmap(X_DIM, Y_DIM);
 
             try
             {
@@ -170,7 +170,7 @@ namespace Kohonen
                     }
                     try
                     {
-                            bit.SetPixel((int)(i / X_DIM), i % X_DIM, Color.FromArgb((int)K_MAP[WinningIndex, 0], (int)K_MAP[WinningIndex, 1], (int)K_MAP[WinningIndex, 2]));
+                        bit.SetPixel(i % X_DIM, (int)(i / X_DIM), Color.FromArgb((int)K_MAP[WinningIndex, 0], (int)K_MAP[WinningIndex, 1], (int)K_MAP[WinningIndex, 2]));
 
                     }
                     catch (Exception)
@@ -179,7 +179,7 @@ namespace Kohonen
                     }
                 }
                 outputImage = bit;
-                out_CompressedImage.Close();
+                //out_CompressedImage.Close();
 
             }
             catch (FileNotFoundException e) { }
