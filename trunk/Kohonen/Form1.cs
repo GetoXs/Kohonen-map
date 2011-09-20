@@ -31,7 +31,7 @@ namespace Kohonen
             Stream myStream = null;
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
-            openFileDialog1.InitialDirectory = "C:\\";
+            //openFileDialog1.InitialDirectory = "C:\\";
             openFileDialog1.Filter = "Pliki BMP (*.bmp)|*.bmp";
             openFileDialog1.FilterIndex = 2;
             openFileDialog1.RestoreDirectory = true;
@@ -66,6 +66,12 @@ namespace Kohonen
 
         private void button2_Click(object sender, EventArgs e)
         {
+          if (pictureBox1.Image == null)
+          {
+            MessageBox.Show("Wpierw wybierz obrazek");
+            return;
+          }
+          
           _neighbourhood = Convert.ToInt32(numericUpDown3.Value);
           _epochs = Convert.ToInt32(numericUpDown1.Value);
           _clusters = 16;
@@ -73,21 +79,36 @@ namespace Kohonen
           _imgSrc = pictureBox1.Image;
 
 
+          label10.Text = "Kompresja w toku";
+          progressBar1.Visible = true;
+          progressBar1.Maximum = _epochs;
+          this.Enabled = false;
 			    //nowy watek
-          
 			    Thread t = new Thread(new ThreadStart(SOMStart));
 			    t.Start();
-            //pictureBox2.Image = mapa.bit;
         }
+      public void changeProgressBar(int status)
+      {
+        this.Invoke((MethodInvoker)delegate
+        {
+          progressBar1.Value = status;
+
+        });
+      }
 		private void SOMStart()
 		{
-            DateTime startTime = DateTime.Now;
-            //label10.Text = "Kompresja w toku";
-            KohonenMap.convert(_imgSrc, _neighbourhood, _epochs, _clusters, _learnign_rate);
-            pictureBox2.Image = KohonenMap.outputImage;
-            DateTime stopTime = DateTime.Now;
-            TimeSpan roznica = stopTime - startTime;
-            //label10.Text = ("Kompresja zajęła:" + roznica.TotalSeconds +" sekund.");
+          DateTime startTime = DateTime.Now;
+          KohonenMap.convert(this, _imgSrc, _neighbourhood, _epochs, _clusters, _learnign_rate);
+          pictureBox2.Image = KohonenMap.outputImage;
+          DateTime stopTime = DateTime.Now;
+          TimeSpan roznica = stopTime - startTime;
+          this.Invoke((MethodInvoker)delegate
+          {
+            label10.Text = "Kompresja zajęła: " + roznica.TotalSeconds + " sekund.";
+            this.Enabled = true;
+            progressBar1.Visible = false;
+          });
+          
 		}
 		
 
