@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Kohonen
 {
@@ -18,18 +19,19 @@ namespace Kohonen
         public static int RGB = 3;
         public static int[,] INPUT_FILE;// = new int[X_DIM * Y_DIM,RGB];
         public static double[,] K_MAP;// = new double[NO_OF_CLUSTERS,RGB];
-        public static int lowerLimit = 100000;
+        public static int lowerLimit = 255;
         public static int upperLimit = 0;
         public static double learning_rate;// = 0.7;
         public static int[] CLUSTER;// = new int[NO_OF_CLUSTERS];
         public static bool SQUARED = true;
         public static Bitmap bitmapa;
         public static Image outputImage = null;
+        private static Form1 form;
 
 
-        public static void convert(Image arg, int Neighbourhood, int epochs, int clusters, double learning_rate)
+        public static void convert(Form1 form, Image arg, int Neighbourhood, int epochs, int clusters, double learning_rate)
         {
-
+          KohonenMap.form = form;
             InitializeCompression(arg, Neighbourhood, epochs, clusters, learning_rate);
             InitializeCluster();
             Train();
@@ -71,7 +73,8 @@ namespace Kohonen
             for (int i = 0; i < NO_OF_CLUSTERS; i++)
                 for (int j = 0; j < RGB; j++)
                 {
-                    K_MAP[i, j] = lowerLimit + Math.Abs(rm.Next(upperLimit + lowerLimit)) % (upperLimit - lowerLimit);
+                    //K_MAP[i, j] = lowerLimit + Math.Abs(rm.Next(upperLimit + lowerLimit)) % (upperLimit - lowerLimit);
+                  K_MAP[i, j] = rm.Next(upperLimit, lowerLimit);
                 }
         }
 
@@ -79,9 +82,10 @@ namespace Kohonen
         {
             for (int epochs = 0; epochs < NO_OF_EPOCHS; epochs++)
             {
+              form.changeProgressBar(epochs+1);
                 for (int i = 0; i < X_DIM * Y_DIM; i++)
                 {
-                    int min = 999999999;
+                    int min = int.MaxValue;
                     int WinningIndex = 0;
                     for (int k = 0; k < NO_OF_CLUSTERS; k++)
                     {
@@ -182,8 +186,8 @@ namespace Kohonen
                 //out_CompressedImage.Close();
 
             }
-            catch (FileNotFoundException e) { }
-            catch (IOException e) { }
+            catch (FileNotFoundException) { }
+            catch (IOException) { }
 
 
         }
