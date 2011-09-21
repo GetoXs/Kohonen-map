@@ -20,6 +20,7 @@ namespace Kohonen
         int _clusters;
         double _learnign_rate;
         Image _imgSrc;
+        long lenStart;
 
         public Form1()
         {
@@ -32,8 +33,8 @@ namespace Kohonen
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
             //openFileDialog1.InitialDirectory = "C:\\";
-            openFileDialog1.Filter = "Pliki BMP (*.bmp)|*.bmp";
-            openFileDialog1.FilterIndex = 2;
+            //openFileDialog1.Filter = "Pliki BMP (*.bmp)|*.bmp";
+            //openFileDialog1.FilterIndex = 2;
             openFileDialog1.RestoreDirectory = true;
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -49,7 +50,12 @@ namespace Kohonen
 
                             pictureBox1.Image = bit;
                             label5.Text = "Pixel format: " + bit.PixelFormat.ToString();
-                            label9.Text = "Rozmiar obrazka: " + bit.Width + " x " + bit.Height;
+                            label9.Text = "Wymiary obrazka: " + bit.Width + " x " + bit.Height;
+                            MemoryStream ms = new MemoryStream();
+                            bit.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            lenStart = ms.Length;
+                            label11.Text = "Rozmiar PNG: " + (lenStart / 1024).ToString() + "kB";
+                            ms.Close();
                             AspectRatio = ((float)bit.Height / (float)bit.Width);
 
                             label8.Text = numericUpDown3.Value + " x " + Math.Truncate((float)numericUpDown3.Value * AspectRatio);
@@ -77,6 +83,10 @@ namespace Kohonen
           _clusters = 16;
           _learnign_rate = Convert.ToDouble(numericUpDown2.Value);
           _imgSrc = pictureBox1.Image;
+
+          //MemoryStream ms = new MemoryStream();
+          _imgSrc.Save("test.png", System.Drawing.Imaging.ImageFormat.Png);
+//          long lenS = ms.Length;
 
 
           label10.Text = "Kompresja w toku";
@@ -107,7 +117,13 @@ namespace Kohonen
             label10.Text = "Kompresja zajęła: " + roznica.TotalSeconds + " sekund.";
             this.Enabled = true;
             progressBar1.Visible = false;
+            MemoryStream ms = new MemoryStream();
+            pictureBox2.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            label12.Text = "Rozmiar PNG: " + (ms.Length / 1024).ToString() + "kB";
+            label13.Text = "Stopień kompresji: " + (((float)lenStart/ms.Length)).ToString(".00");
+            ms.Close();
           });
+
           
 		}
 		
@@ -120,6 +136,20 @@ namespace Kohonen
         private void numericUpDown3_ValueChanged(object sender, EventArgs e)
         {
             label8.Text = numericUpDown3.Value + " x " + Math.Truncate((float)numericUpDown3.Value * AspectRatio);
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+          saveFileDialog1.Filter = "PNG|.png";
+          if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+          {
+            pictureBox2.Image.Save(saveFileDialog1.FileName);
+          }
         }
     }
 }
