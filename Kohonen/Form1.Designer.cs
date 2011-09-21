@@ -47,6 +47,11 @@ namespace Kohonen
       this.label9 = new System.Windows.Forms.Label();
       this.label10 = new System.Windows.Forms.Label();
       this.progressBar1 = new System.Windows.Forms.ProgressBar();
+      this.label11 = new System.Windows.Forms.Label();
+      this.label12 = new System.Windows.Forms.Label();
+      this.label13 = new System.Windows.Forms.Label();
+      this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+      this.button3 = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -252,14 +257,15 @@ namespace Kohonen
       this.label9.AutoSize = true;
       this.label9.Location = new System.Drawing.Point(228, 279);
       this.label9.Name = "label9";
-      this.label9.Size = new System.Drawing.Size(89, 13);
+      this.label9.Size = new System.Drawing.Size(91, 13);
       this.label9.TabIndex = 11;
-      this.label9.Text = "Rozmiar obrazka:";
+      this.label9.Text = "Wymiary obrazka:";
+      this.label9.Click += new System.EventHandler(this.label9_Click);
       // 
       // label10
       // 
       this.label10.AutoSize = true;
-      this.label10.Location = new System.Drawing.Point(10, 301);
+      this.label10.Location = new System.Drawing.Point(10, 319);
       this.label10.Name = "label10";
       this.label10.Size = new System.Drawing.Size(80, 13);
       this.label10.TabIndex = 12;
@@ -267,17 +273,58 @@ namespace Kohonen
       // 
       // progressBar1
       // 
-      this.progressBar1.Location = new System.Drawing.Point(231, 296);
+      this.progressBar1.Location = new System.Drawing.Point(231, 314);
       this.progressBar1.Name = "progressBar1";
       this.progressBar1.Size = new System.Drawing.Size(183, 23);
       this.progressBar1.TabIndex = 13;
       this.progressBar1.Visible = false;
       // 
+      // label11
+      // 
+      this.label11.AutoSize = true;
+      this.label11.Location = new System.Drawing.Point(10, 292);
+      this.label11.Name = "label11";
+      this.label11.Size = new System.Drawing.Size(74, 13);
+      this.label11.TabIndex = 14;
+      this.label11.Text = "Rozmiar PNG:";
+      // 
+      // label12
+      // 
+      this.label12.AutoSize = true;
+      this.label12.Location = new System.Drawing.Point(417, 292);
+      this.label12.Name = "label12";
+      this.label12.Size = new System.Drawing.Size(74, 13);
+      this.label12.TabIndex = 15;
+      this.label12.Text = "Rozmiar PNG:";
+      // 
+      // label13
+      // 
+      this.label13.AutoSize = true;
+      this.label13.Location = new System.Drawing.Point(417, 319);
+      this.label13.Name = "label13";
+      this.label13.Size = new System.Drawing.Size(90, 13);
+      this.label13.TabIndex = 16;
+      this.label13.Text = "Stopień kompresji";
+      // 
+      // button3
+      // 
+      this.button3.Location = new System.Drawing.Point(470, 266);
+      this.button3.Name = "button3";
+      this.button3.Size = new System.Drawing.Size(75, 23);
+      this.button3.TabIndex = 17;
+      this.button3.Text = "Zapisz";
+      this.button3.UseVisualStyleBackColor = true;
+      this.button3.Click += new System.EventHandler(this.button3_Click);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(641, 332);
+      this.ClientSize = new System.Drawing.Size(641, 347);
+      this.Controls.Add(this.button3);
+      this.Controls.Add(this.label13);
+      this.Controls.Add(this.label12);
+      this.Controls.Add(this.label11);
       this.Controls.Add(this.progressBar1);
       this.Controls.Add(this.label10);
       this.Controls.Add(this.label9);
@@ -323,6 +370,11 @@ namespace Kohonen
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button button3;
     }
 }
 
