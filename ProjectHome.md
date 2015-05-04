@@ -1,0 +1,1 @@
+Kompresja obrazków metodą map cech Kohonena
